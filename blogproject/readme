@@ -17,8 +17,5 @@ deactivate
 python manage.py runserver
 # 进入shell
 python manage.py shell
-# admin账号密码
-账号:myuser
-密码:qQ123456
 # 创建搜索的索引文件:
 python manage.py rebuild_index
