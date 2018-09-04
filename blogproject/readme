@@ -1,0 +1,24 @@
+# 正式编写步骤:
+    1.配置url
+    2.models
+    3.模板
+# 创建app包
+python manage.py startapp blog
+# 将新创建的模型迁移数据库
+python manage.py makemigrations
+python manage.py migrate
+# 创建数据库
+python manage.py migrate
+# pycharm中进入虚拟环境
+source /home/user001/PycharmProjects/blogproject/blogproject_env/bin/activate
+# 退出虚拟环境
+deactivate
+# 打开服务器
+python manage.py runserver
+# 进入shell
+python manage.py shell
+# admin账号密码
+账号:myuser
+密码:qQ123456
+# 创建搜索的索引文件:
+python manage.py rebuild_index
