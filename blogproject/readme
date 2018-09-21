@@ -19,3 +19,5 @@ python manage.py runserver
 python manage.py shell
 # 创建搜索的索引文件:
 python manage.py rebuild_index
+# 创建超级用户 用于admin后台登录和管理
+python manage.py createsuperuser

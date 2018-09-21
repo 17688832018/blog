@@ -105,10 +105,12 @@
                 <!-- date格式对象自带year month等属性 -->
                 <div class="widget widget-archives">
                     <h3 class="widget-title">归档</h3>
+{#                模板标签 archives 位于templatetags中#}
                     {% archives as date_list %}
                     <ul>
                         {% for date in date_list %}
                             <li>
+{#                                链接到 blog项目的name=archives的url#}
                                 <a href="{% url 'blog:archives' date.year date.month %}">
                                     {{ date.year }} 年 {{ date.month }} 月
                                 </a>

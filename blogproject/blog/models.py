@@ -1,3 +1,8 @@
+"""存放模型,继承自modles.Model
+创建了3个模型(表),类别表 标签表 文章表
+文章表中包含类别和标签属性,用foreignKey和manyToManyField关联这两个类别表和标签表
+更新模型后 要在python manage.py 中更新
+"""
 from django.db import models
 # django内置应用
 from django.contrib.auth.models import User
@@ -10,11 +15,13 @@ import markdown
 # 调用去除html文本中的html标签
 from django.utils.html import strip_tags
 
+
 # python2用unicode替代str方法
 # 文章分类
 @python_2_unicode_compatible
 class Category(models.Model):
-    name =models.CharField(max_length=100)
+    # 超出长度无法存入到数据库
+    name = models.CharField(max_length=100)
     def __str__(self):
         return self.name
 # 文章标签类
@@ -32,13 +39,13 @@ class Post(models.Model):
     title =models.CharField(max_length=70)
     # 文章正文  内容较长的文本用TextField()
     body =models.TextField()
-    # 文章创建时间  存储时间字段用DateTimeField()
+    # 文章创建时间  存储时间字段用DateTimeField() 在shell里赋值为timezone.now()
     created_time =models.DateTimeField()
     # 文章最后修改时间
     modified_time =models.DateTimeField()
     # 文章摘要  允许空值
     excerpt =models.CharField(max_length=200,blank=True)
-    # 实例化分类(一篇文章只能有一个分类 一对多用ForeignKey())
+    # 实例化分类(一篇文章只能有一个分类 一对多用ForeignKey()) 不为空
     category =models.ForeignKey(Category)
     # 实例化标签(一篇文章可有多个标签,一个标签也可对应多个文章,多对多用ManyToManyField())
     tags =models.ManyToManyField(Tag,blank=True)

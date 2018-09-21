@@ -21,6 +21,7 @@ from django.db.models import Q
     # 逆序排序获得全部文章
     # post_list=Post.objects.all().order_by('-created_time')
     # return render(request,'blog/index.html',context={
+    # # title welcome 对应模板里的{{title}} {{welcome}}
         # 'title':'我的博客首页',
         # 'welcome':'欢迎访问我的博客首页',
         # 'post_list':post_list
@@ -296,9 +297,38 @@ class PostDetailView(DetailView):
 
 # 归档视图(位于右侧)
 """
-通过过滤器filter排序
+请求响应流程:
+1.加载页面:模板页面中 调用模板标签显示归档的date.year和date.month 位于templatetags/blog_tags中的archives(精确到月,逆序)
+2.发送请求:点击页面的a标签的href="{% url 'blog:archives' date.year date.month %}链接后,到urls.py中进行路由(blog应用的name=archives的url)
+    例如发送请求/archives/2018/8/
+3.获取请求:获得/archives/2018/8/路径,并且路由到views的archives(传递了年和月两个参数)进行逻辑处理,
+4.处理请求:将某月档下的博客响应到前台 
+
+通过过滤器filter排序 不用获得全部的Post.objects.all()
 用于python类中调用的created_time.year作为参数列表时被替换为created_time__year
+
 """
+"""
+pytz作用
+解决归档不到时区
+filter 时同时出现 year、month 无法查询的问题
+
+建议数据库使用 UTC 时间 (django.utils.timezone.now())，而不是本地时间（datetime.datetime.now()），
+本地时间由 Django 自动转换。这样方便后期修改时区。
+设置 settings.py 文件，配置 USE_TZ=True，即启用 UTC 时间。
+解决 filter 时同时出现 year、month 无法查询的问题
+不同数据库需求不一样
+SQLite: install pytz — conversions are actually performed in Python.  
+PostgreSQL: no requirements (see Time Zones).  
+Oracle: no requirements (see Choosing a Time Zone File).  
+MySQL: install pytz and load the time zone tables with mysql_tzinfo_to_sql.安装完 pytz 后，MySQL 需要导入时区 
+Linux 和 MacOS： 
+sudo mysql_tzinfo_to_sql /usr/share/zoneinfo/ | mysql -u root mysql 
+Windows
+先停止 mysqld.exe，到 https://dev.mysql.com/downloads/timezones.html 下载对应版本的时区文件，
+覆盖 mysql 安装目录下的 data\mysql 文件夹下的同名文件，重新启动 mysql.exe。
+"""
+# 归档视图(位于右侧)
 # def archives(request,year,month):
 #     post_list=Post.objects.filter(created_time__year=year,
 #                                   created_time__month=month)
@@ -321,7 +351,7 @@ class ArchivesView(ListView):
 # def category(request, pk):
 #     # 根据pk值在数据库中获取到该分类,
 #     cate=get_object_or_404(Category, pk=pk)
-#     # 再通过filter获取到该分类下的所有文章
+#     # 再通过filter获取到该分类下的所有文章 过滤Post.object里的category等同页面获取到的分类cate
 #     post_list = Post.objects.filter(category=cate)
 #     # post_list=Post.objects.filter(category=cate).order_by('-created_time')
 #     return render(request,'blog/index.html',context={'post_list':post_list})

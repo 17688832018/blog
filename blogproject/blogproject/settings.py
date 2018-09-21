@@ -76,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'blogproject.wsgi.application'
 
 
-# Database
+# Database 这里用内置的SQLite3数据库 文件为db.sqlite3
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
@@ -105,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# web服务器中文
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'zh-hans'
 

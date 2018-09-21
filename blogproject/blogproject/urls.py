@@ -20,8 +20,9 @@ from blog.feeds import AllPostRssFeed
 urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
-    # 导入app中的urls配置 会拼接两个urls字符串
-    url(r'',include('blog.urls')),
+    # 导入app中的urls配置 会拼接两个urls字符串 即主程序中的r'pro/'+应用中urls中的r'blog/' = 'pro/blog'
+    # namespace和app_name用于跟blog/urls的app_name='blog'对应(django1.8版本需要)
+    url(r'',include('blog.urls',namespace='blog',app_name='blog')),
     url(r'',include('comments.urls')),
     url(r'^all/rss/$',AllPostRssFeed(),name='rss'),
     # haystack搜索引擎

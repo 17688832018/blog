@@ -1,3 +1,4 @@
+{# 模板继承 #}
 {% extends 'base.html' %}
 {% block main %}
     <!-- 搜索信息 -->
@@ -34,6 +35,7 @@
                 </div>
             </div>
         </article>
+    {# 当post_list为空时显示empty下面的内容       #}
     {% empty %}
         <div class="no-post">暂时还没有发布的文章!</div>
     {% endfor %}

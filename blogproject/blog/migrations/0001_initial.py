@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-
+"""通过python manage.py makemigrations生成的 记录模型变更"""
 
 class Migration(migrations.Migration):
 
